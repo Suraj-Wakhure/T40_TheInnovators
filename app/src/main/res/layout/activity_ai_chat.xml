@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:id="@+id/AiChatActivity"
+    android:background="#FFFFFF">
+
+    <!-- Logo -->
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ai_chatbot"
+        android:contentDescription="Logo" />
+
+    <!-- Query Card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        card_view:cardCornerRadius="12dp"
+        android:layout_margin="20dp"
+        android:outlineSpotShadowColor="#9C27B0"
+        android:outlineAmbientShadowColor="#9C27B0"
+        card_view:cardElevation="40dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:padding="8dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/queryInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter or select your query"
+                android:inputType="text"
+                android:padding="12dp"
+                android:textColorHint="#9C27B0"
+                android:textColorHighlight="#9C27B0"
+                android:textColor="#673AB7"
+                android:textStyle="bold"
+
+                />    <!-- optional -->
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/send_arrow"
+            android:id="@+id/query_submit_button"
+            android:layout_marginTop="2dp"
+
+            android:layout_marginLeft="280dp"/>
+    </androidx.cardview.widget.CardView>
+
+
+    <!-- Answer Card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"
+        card_view:cardCornerRadius="12dp"
+        android:outlineSpotShadowColor="#9C27B0"
+        android:outlineAmbientShadowColor="#9C27B0"
+        android:background="#673AB7"
+        android:layout_margin="10dp"
+        card_view:cardElevation="40dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:background="@color/white"
+            android:outlineAmbientShadowColor="#673AB7"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/responsiveTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Answer of query will be shown here"
+                android:textSize="16sp"
+                android:textColor="#000000" />
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

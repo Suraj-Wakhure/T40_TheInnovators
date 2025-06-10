@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="16dp"
+    android:background="@color/white"
+    android:outlineAmbientShadowColor="#E91E63"
+    android:outlineSpotShadowColor="#E91E63"
+    app:cardElevation="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="16dp">
+
+        <!-- Header Image -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/map_img"
+            android:contentDescription="Map preview" />
+
+        <!-- Hospital Name -->
+        <TextView
+            android:id="@+id/hospital_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Hospital Name"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Address -->
+        <TextView
+            android:id="@+id/hospital_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="123 Main Street, City"
+            android:textColor="#555555"
+            android:textSize="14sp" />
+
+        <!-- Contact Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/hospital_phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="📞 123-456-7890"
+                android:textColor="#5E1AD8"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/hospital_distance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="2.5 km"
+                android:gravity="end"
+                android:textColor="#25D5EC"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/emergency_call_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.5"
+                android:src="@drawable/emergency_call"
+                android:contentDescription="Emergency Call Button" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

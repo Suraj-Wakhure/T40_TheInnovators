@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/white"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="16dp">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/text_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Emergency Services"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingBottom="16dp" />
+
+        <!-- Emergency Number Cards -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardElevation="4dp"
+            card_view:cardCornerRadius="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="120dp"
+            android:backgroundTint="#1E1E1E">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🚑 Ambulance: 102"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="📞 Police: 100"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:paddingTop="8dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🔥 Fire Brigade: 101"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:paddingTop="8dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Panic and Safe Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp">
+
+            <Button
+                android:id="@+id/btn_panic"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="60dp"
+                android:text="PANIC"
+                android:backgroundTint="#FF3B30"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"
+                android:elevation="6dp" />
+
+            <Button
+                android:id="@+id/btn_safe"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="60dp"
+                android:text="SAFE"
+                android:backgroundTint="#34C759"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"
+                android:elevation="6dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

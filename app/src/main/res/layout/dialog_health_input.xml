@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <EditText
+            android:id="@+id/editChronicDiseases"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Chronic Diseases (e.g., Diabetes, Asthma)"
+            android:inputType="textMultiLine"
+            android:layout_marginTop="10dp"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/editSurgeries"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Past Major Surgeries (e.g., Bypass)"
+            android:inputType="textMultiLine"
+            android:layout_marginTop="10dp"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/editAllergies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Allergies (e.g., Penicillin)"
+            android:inputType="textMultiLine"
+            android:layout_marginTop="10dp"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/editMedications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ongoing Medications (e.g., Insulin)"
+            android:inputType="textMultiLine"
+            android:layout_marginTop="10dp"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/editBloodGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Blood Group (e.g., B+)"
+            android:inputType="text"
+            android:layout_marginTop="10dp"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/editLifestyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Smoking/Alcohol History (Yes/No)"
+            android:inputType="text"
+            android:layout_marginTop="10dp"
+            android:padding="16dp" />
+
+        <Button
+            android:id="@+id/btnSaveData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="SAVE" />
+    </LinearLayout>
+</ScrollView>

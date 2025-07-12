@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/tutorial1"
+    android:background="#FAFAFA">
+
+    <!-- App Bar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="Tutorials"
+            app:titleTextColor="#D32F2F"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+    <!-- Optional Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_help"
+        app:backgroundTint="#D32F2F"
+        app:layout_anchor="@id/toolbar"
+        app:layout_anchorGravity="bottom|right|end"
+        app:tint="@android:color/white"/>
+    <!-- Content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Step Indicator -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="24dp">
+
+                <!-- Dot 1 (Active) -->
+                <View
+                    android:id="@+id/dot1"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="@drawable/dot_active"
+                    android:layout_marginHorizontal="4dp"/>
+
+                <!-- Dot 2 -->
+                <View
+                    android:id="@+id/dot2"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="@drawable/dot_inactive"
+                    android:layout_marginHorizontal="4dp"/>
+
+                <!-- Dot 3 -->
+                <View
+                    android:id="@+id/dot3"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="@drawable/dot_inactive"
+                    android:layout_marginHorizontal="4dp"/>
+            </LinearLayout>
+
+            <!-- Tutorial Card (Content unchanged) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="2dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#AA4242"
+                app:cardCornerRadius="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:padding="24dp">
+
+                    <ImageView
+                        android:id="@+id/tutorial_image"
+                        android:layout_width="250dp"
+                        android:layout_height="300dp"
+                        android:scaleType="centerCrop"
+                        android:layout_marginLeft="30dp"
+                        android:src="@drawable/tuto_1"
+                        android:contentDescription="Discover places"/>
+
+                    <TextView
+                        android:id="@+id/tutorial_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="What is ResQlink? \nWhy You Need It?"
+                        android:textColor="#212121"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="16dp"/>
+
+                    <TextView
+                        android:id="@+id/tutorial_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="77dp"
+                        android:layout_marginTop="8dp"
+                        android:lineSpacingExtra="6dp"
+                        android:text="ResQlink is an emergency alert system that lets you send SMS with your live location using voice, shake, or volume button triggers."
+                        android:textColor="#616161"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Navigation Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="24dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="SKIP"
+                    android:id="@+id/skip_button"
+                    android:textColor="#D32F2F"
+                    app:strokeColor="#D32F2F"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="24dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="NEXT"
+                    android:id="@+id/next_button"
+                    android:layout_marginStart="16dp"
+                    android:textColor="@android:color/white"
+                    app:backgroundTint="#D32F2F"
+                    app:cornerRadius="24dp"
+                    style="@style/Widget.MaterialComponents.Button"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

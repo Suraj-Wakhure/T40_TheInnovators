@@ -17,7 +17,15 @@
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ai_chatbot"
         android:contentDescription="Logo" />
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EmerGAI"
+        android:fontFamily="@font/boldfont"
+        android:textColor="#9C27B0"
+        android:textSize="25dp"
+        android:textAlignment="center"
+        />
     <!-- Query Card -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

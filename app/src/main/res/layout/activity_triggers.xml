@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/triggers"
+    android:background="#F5F5F5">
+
+    <!-- Floating Back Button (Added at top) -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_arrow_back"
+        android:contentDescription="Back"
+        android:layout_gravity="start|top"
+        app:backgroundTint="#FFFFFF"
+        app:tint="#D32F2F"
+        app:elevation="8dp"
+        app:borderWidth="0dp"/>
+
+    <!-- Scrollable Content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:paddingTop="8dp"> <!-- Reduced top padding -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Setup Triggering Method"
+                android:textColor="#D32F2F"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="16dp"/> <!-- Added top margin -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choose which triggering method you want to activate"
+                android:textColor="#616161"
+                android:textSize="14sp"
+                android:layout_marginBottom="24dp"/>
+
+            <!-- Shaking Alert Card (Unchanged) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@color/white"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                app:strokeColor="#C33737"
+                app:strokeWidth="1dp">
+
+                <!-- ... (Keep existing card content) ... -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/shaking_phone"
+                            android:layout_marginEnd="16dp"
+                            app:tint="#D32F2F" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Shaking Alert"
+                            android:textColor="#212121"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchShake"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:trackTint="#D32F2F"
+                            />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Shake your phone vigorously to trigger emergency alert"
+                        android:textColor="#757575"
+                        android:textSize="14sp"
+                        android:layout_marginTop="12dp"
+                        android:lineSpacingExtra="4dp"/>
+                </LinearLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Voice Alert Card (Unchanged) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                app:strokeColor="#C33737"
+                app:strokeWidth="1dp">
+
+                <!-- ... (Keep existing card content) ... -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/voice_triggering"
+                            android:layout_marginEnd="16dp"
+                            app:tint="#D32F2F" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Voice Command"
+                            android:textColor="#212121"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchVoice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:trackTint="#D32F2F"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Say 'Send SMS and the message you want to send' clearly to trigger alerts"
+                        android:textColor="#757575"
+                        android:textSize="14sp"
+                        android:layout_marginTop="12dp"
+                        android:lineSpacingExtra="4dp"/>
+                </LinearLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+            <!-- Voice Alert Card (Unchanged) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                app:strokeColor="#C33737"
+                app:strokeWidth="1dp">
+
+                <!-- ... (Keep existing card content) ... -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/volumedown_triggering"
+                            android:layout_marginEnd="16dp"
+                            app:tint="#D32F2F" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Volume Button"
+                            android:textColor="#212121"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchVolume"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:trackTint="#D32F2F"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Press the volumne down button for 5 Seconds to trigger emergency alert"
+                        android:textColor="#757575"
+                        android:textSize="14sp"
+                        android:layout_marginTop="12dp"
+                        android:lineSpacingExtra="4dp"/>
+                </LinearLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+            <!-- Voice Alert Card (Unchanged) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="12dp"
+                app:strokeColor="#C33737"
+                app:strokeWidth="1dp">
+
+                <!-- ... (Keep existing card content) ... -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/crash_alert_triggering"
+                            android:layout_marginEnd="16dp"
+                            app:tint="#D32F2F" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Crash Alert"
+                            android:textColor="#212121"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchCrash"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:trackTint="#D32F2F"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Automatically detects hard impacts"
+                        android:textColor="#757575"
+                        android:textSize="14sp"
+                        android:layout_marginTop="12dp"
+                        android:lineSpacingExtra="4dp"/>
+                </LinearLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

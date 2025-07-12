@@ -86,6 +86,10 @@ dependencies {
 
     implementation("com.google.android.libraries.places:places:3.3.0")
 
+    implementation("com.google.android.material:material:1.6.1")
+
+    implementation("androidx.media:media:1.6.0")
+
 
 
 

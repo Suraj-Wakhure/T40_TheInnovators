@@ -1,0 +1,26 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <set>
+            <objectAnimator
+                android:propertyName="translationZ"
+                android:valueTo="8dp"
+                android:duration="50"/>
+            <objectAnimator
+                android:propertyName="cardElevation"
+                android:valueTo="8dp"
+                android:duration="50"/>
+        </set>
+    </item>
+    <item>
+        <set>
+            <objectAnimator
+                android:propertyName="translationZ"
+                android:valueTo="0dp"
+                android:duration="100"/>
+            <objectAnimator
+                android:propertyName="cardElevation"
+                android:valueTo="4dp"
+                android:duration="100"/>
+        </set>
+    </item>
+</selector>

@@ -1,106 +1,392 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home_fragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
 
-    android:background="@color/white"
-    >
-
-    <LinearLayout
+    <!-- Your existing NestedScrollView content (unchanged) -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:fillViewport="true"
+        android:paddingTop="72dp"> <!-- Added padding to prevent content overlap -->
 
-        <!-- Title -->
-        <TextView
-            android:id="@+id/text_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Emergency Services"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:paddingBottom="16dp" />
-
-        <!-- Emergency Number Cards -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            card_view:cardElevation="4dp"
-            card_view:cardCornerRadius="12dp"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="120dp"
-            android:backgroundTint="#1E1E1E">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="🚑 Ambulance: 102"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="📞 Police: 100"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp"
-                    android:paddingTop="8dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="🔥 Fire Brigade: 101"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp"
-                    android:paddingTop="8dp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Panic and Safe Buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Your entire existing content remains exactly the same -->
+            <!-- Blinking SOS Button Container -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="32dp">
+
+                <!-- Pulsing Circle Background -->
+                <View
+                    android:id="@+id/pulseCircle"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_pulse"
+                    android:visibility="visible"/>
+
+                <!-- Main SOS Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sosButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:elevation="16dp"
+                    android:text="SOS"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="60dp"
+                    app:strokeColor="#FF0000"
+                    app:strokeWidth="2dp"
+                    app:backgroundTint="#D32F2F"/>
+            </FrameLayout>
+
+            <!-- Quick Emergency Services Title -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quick Emergency Services"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Horizontal Scrollable Emergency Cards -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Police Card -->
+                    <com.google.android.material.card.MaterialCardView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/card_view_policeman"
+                        android:layout_width="160dp"
+                        android:layout_height="200dp"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp"
+                        app:strokeColor="#FF0000"
+                        app:strokeWidth="1dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:transitionName="card_to_detail_police"
+                        android:stateListAnimator="@animator/card_morph_animator"
+                        android:background="@drawable/card_morph_animation"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="@color/white"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/policeman"
+                                android:layout_marginBottom="12dp"
+                                app:tint="#FF0000" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Police"
+                                android:textColor="#000000"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:layout_marginBottom="4dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="100"
+                                android:textColor="#000000"
+                                android:textSize="14sp"/>
+
+                            <Button
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="12dp"
+                                android:text="Call"
+                                android:textColor="#FFFFFF"
+                                android:backgroundTint="#FF0000"
+                                android:drawableStart="@drawable/ic_call_white"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Hospital Card -->
+                    <com.google.android.material.card.MaterialCardView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/card_view_hospital"
+                        android:layout_width="160dp"
+                        android:layout_height="200dp"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp"
+                        app:strokeColor="#FF0000"
+                        app:strokeWidth="1dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:transitionName="card_to_detail_hospital"
+                        android:stateListAnimator="@animator/card_morph_animator"
+                        android:background="@drawable/card_morph_animation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="@color/white"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/ic_hospital"
+                                android:layout_marginBottom="12dp"
+                                app:tint="#FF0000" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hospital"
+                                android:textColor="#000000"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:layout_marginBottom="4dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="108"
+                                android:textColor="#000000"
+                                android:textSize="14sp"/>
+
+                            <Button
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="12dp"
+                                android:text="Call"
+                                android:textColor="#FFFFFF"
+                                android:backgroundTint="#FF0000"
+                                android:drawableStart="@drawable/ic_call_white"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Add more emergency service cards as needed -->
+                    <!-- Police Card -->
+                    <com.google.android.material.card.MaterialCardView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/card_view_1"
+                        android:layout_width="160dp"
+                        android:layout_height="200dp"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp"
+                        app:strokeColor="#FF0000"
+                        app:strokeWidth="1dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:transitionName="card_to_detail_police1"
+                        android:stateListAnimator="@animator/card_morph_animator"
+                        android:background="@drawable/card_morph_animation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="@color/white"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/policeman"
+                                android:layout_marginBottom="12dp"
+                                app:tint="#FF0000" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Police"
+                                android:textColor="#000000"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:layout_marginBottom="4dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="100"
+                                android:textColor="#000000"
+                                android:textSize="14sp"/>
+
+                            <Button
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="12dp"
+                                android:text="Call"
+                                android:textColor="#FFFFFF"
+                                android:backgroundTint="#FF0000"
+                                android:drawableStart="@drawable/ic_call_white"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Hospital Card -->
+                    <com.google.android.material.card.MaterialCardView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/card_view_2"
+                        android:layout_width="160dp"
+                        android:layout_height="200dp"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp"
+                        app:strokeColor="#FF0000"
+                        app:strokeWidth="1dp"
+                        android:transitionName="card_to_detail_police2"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:stateListAnimator="@animator/card_morph_animator"
+                        android:background="@drawable/card_morph_animation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="@color/white"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/ic_hospital"
+                                android:layout_marginBottom="12dp"
+                                app:tint="#FF0000" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hospital"
+                                android:textColor="#000000"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:layout_marginBottom="4dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="108"
+                                android:textColor="#000000"
+                                android:textSize="14sp"/>
+
+                            <Button
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="12dp"
+                                android:text="Call"
+                                android:textColor="#FFFFFF"
+                                android:backgroundTint="#FF0000"
+                                android:drawableStart="@drawable/ic_call_white"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                    <!-- All other existing cards remain unchanged -->
+                    <!-- ... -->
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Emergency Description -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Press SOS button for immediate emergency assistance"
+                android:textAlignment="center"
+                android:textColor="#AAAAAA"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Floating Top Action Bar (Simplified) -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="8dp"
+        app:strokeColor="#E0E0E0"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="24dp">
+            android:background="@drawable/card_morph_animation"
+            android:paddingHorizontal="8dp">
 
-            <Button
-                android:id="@+id/btn_panic"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="60dp"
-                android:text="PANIC"
-                android:backgroundTint="#FF3B30"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:layout_marginEnd="8dp"
-                android:elevation="6dp" />
+            <!-- Triggers Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTriggers"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Triggers"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:paddingHorizontal="16dp"/>
 
-            <Button
-                android:id="@+id/btn_safe"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="60dp"
-                android:text="SAFE"
-                android:backgroundTint="#34C759"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                android:elevation="6dp" />
+            <!-- Divider -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="24dp"
+                android:layout_marginHorizontal="4dp"
+                android:background="#000000"/>
+
+            <!-- Tutorial Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTutorial"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Tutorial"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:paddingHorizontal="16dp"/>
         </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

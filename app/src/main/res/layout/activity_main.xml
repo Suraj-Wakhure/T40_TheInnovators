@@ -1,48 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     android:id="@+id/main"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="#FAFAFA"
-    android:gravity="center">
+    android:gravity="center"
+    android:padding="24dp">
+
+    <!-- App Name -->
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ResQLink"
+        android:textSize="36sp"
+        android:layout_marginTop="30dp"
+        android:textStyle="bold"
+        android:textColor="#212121"
+        android:fontFamily="@font/boldfont"
+    android:layout_marginBottom="16dp" />
 
     <!-- Lottie Animation for Logo -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieLogo"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="131dp"
-        android:foregroundGravity="center"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/resqlink_logo" />
 
-
     <!-- Tagline -->
     <TextView
         android:id="@+id/tagline"
-        android:layout_below="@id/lottieLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Instant Health Alerts. Trusted Connections."
+        android:text="Instant Emergency Alerts. Trusted Connections."
         android:textAlignment="center"
         android:textColor="#263238"
         android:textSize="16sp"
+        android:fontFamily="@font/subtitlefont"
         android:layout_marginTop="16dp" />
+
+    <!-- Spacer -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <!-- Copyright -->
     <TextView
         android:id="@+id/copyright"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="© 2025 ResQLink. All rights reserved."
         android:textAlignment="center"
         android:textColor="#9E9E9E"
         android:textSize="12sp"
-        android:paddingBottom="16dp" />
+        android:paddingBottom="8dp" />
 
-</RelativeLayout>
+</LinearLayout>

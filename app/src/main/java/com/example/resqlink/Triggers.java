@@ -20,6 +20,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
+
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
@@ -63,9 +67,8 @@ public class Triggers extends AppCompatActivity {
         switchShake = findViewById(R.id.switchShake);
         switchVoice = findViewById(R.id.switchVoice);
         switchVolume = findViewById(R.id.switchVolume);
-        switchCrash = findViewById(R.id.switchCrash); // Add this in layout XML
+        switchCrash = findViewById(R.id.switchCrash);
 
-        // Load saved states
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         switchShake.setChecked(prefs.getBoolean("shake_enabled", false));
         switchVoice.setChecked(prefs.getBoolean("voice_enabled", false));
@@ -78,7 +81,6 @@ public class Triggers extends AppCompatActivity {
             requestPermissions();
         }
 
-        // SHAKE TOGGLE
         switchShake.setOnCheckedChangeListener((buttonView, isChecked) -> {
             saveToggleState("shake_enabled", isChecked);
             if (isChecked) {
@@ -88,7 +90,6 @@ public class Triggers extends AppCompatActivity {
             }
         });
 
-        // VOICE TOGGLE
         switchVoice.setOnCheckedChangeListener((buttonView, isChecked) -> {
             saveToggleState("voice_enabled", isChecked);
             if (isChecked) {
@@ -98,7 +99,6 @@ public class Triggers extends AppCompatActivity {
             }
         });
 
-        // VOLUME TOGGLE
         switchVolume.setOnCheckedChangeListener((buttonView, isChecked) -> {
             saveToggleState("volume_enabled", isChecked);
             if (isChecked) {
@@ -116,7 +116,6 @@ public class Triggers extends AppCompatActivity {
             }
         });
 
-        // CRASH TOGGLE
         switchCrash.setOnCheckedChangeListener((buttonView, isChecked) -> {
             saveToggleState("crash_enabled", isChecked);
             if (isChecked) {
@@ -129,7 +128,6 @@ public class Triggers extends AppCompatActivity {
             }
         });
 
-        // Auto-start services if toggles were enabled previously
         if (switchShake.isChecked()) startShakeDetectionService();
         if (switchVoice.isChecked()) startVoiceListening();
         if (switchCrash.isChecked()) {
@@ -154,7 +152,7 @@ public class Triggers extends AppCompatActivity {
                 @Override public void onBufferReceived(byte[] buffer) {}
                 @Override public void onEndOfSpeech() {}
                 @Override public void onError(int error) {
-                    if (isListening) startVoiceListening(); // Restart if error
+                    if (isListening) startVoiceListening();
                 }
                 @Override public void onResults(Bundle results) {
                     ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
@@ -206,26 +204,68 @@ public class Triggers extends AppCompatActivity {
     }
 
     private void sendSMS(String message) {
-        SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        String number = sharedPreferences.getString("preset_contact", "");
-        number = "7972408401";
-        if (!number.isEmpty()) {
-            try {
+        sendSMSWithLocation(message);
+    }
+
+    public void sendSMSWithLocation(String message) {
+        String number = "7972408401";
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 102);
+            return;
+        }
+
+        com.google.android.gms.location.FusedLocationProviderClient fusedLocationClient =
+                com.google.android.gms.location.LocationServices.getFusedLocationProviderClient(this);
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(1000);
+        locationRequest.setFastestInterval(500);
+        locationRequest.setNumUpdates(1);
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                fusedLocationClient.removeLocationUpdates(this);
+
+                String finalMessage = message;
+
+                if (locationResult != null && locationResult.getLastLocation() != null) {
+                    double lat = locationResult.getLastLocation().getLatitude();
+                    double lng = locationResult.getLastLocation().getLongitude();
+                    String locationLink = "https://www.google.com/maps?q=" + lat + "," + lng;
+                    finalMessage += "\nMy Location: " + locationLink;
+                } else {
+                    finalMessage += "\nLocation unavailable";
+                }
+
                 EmergencyAlertManager alertManager = new EmergencyAlertManager(
                         getApplicationContext(),
-                        "7972408401",
-                        message+"."+" My location is being shared."
+                        number,
+                        finalMessage
                 );
+
                 if (alertManager.hasRequiredPermissions()) {
                     alertManager.triggerEmergencyAlert();
+                    Toast.makeText(Triggers.this, "SMS sent to " + number, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(Triggers.this, "Permissions not granted", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(this, "SMS sent to " + number, Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
-                Toast.makeText(this, "Failed to send SMS: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(this, "No saved contact found", Toast.LENGTH_SHORT).show();
-        }
+        }, getMainLooper());
+    }
+
+    // ✅ For SHAKE Service to call:
+    public static void sendShakeSMSWithLocation(AppCompatActivity activity) {
+        activity.runOnUiThread(() -> {
+            ((Triggers) activity).sendSMSWithLocation("HELP! I'm in an emergency.");
+        });
     }
 
     private void startShakeDetectionService() {

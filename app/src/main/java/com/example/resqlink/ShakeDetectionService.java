@@ -1,9 +1,9 @@
 package com.example.resqlink;
 
-
 import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE;
 import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -16,42 +16,41 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.IBinder;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-//import com.example.shakingfeature.ShakeDetector;
-
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 
 public class ShakeDetectionService extends Service implements SensorEventListener {
+
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private ShakeDetector shakeDetector;
+    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     public void onCreate() {
         super.onCreate();
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         if (sensorManager != null) {
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
+
         shakeDetector = new ShakeDetector();
         shakeDetector.setOnShakeListener(count -> {
             if (count >= 3) {
-                EmergencyAlertManager alertManager = new EmergencyAlertManager(
-                        getApplicationContext(),
-                        "7972408401",
-                        "HELP! I'm in an emergency. My location is being shared."
-                );
-                if (alertManager.hasRequiredPermissions()) {
-                    alertManager.triggerEmergencyAlert();
-                }
+                sendShakeSMSWithLocation();
             }
         });
-
     }
 
-    // Update onStartCommand
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         createNotificationChannel();
@@ -59,9 +58,7 @@ public class ShakeDetectionService extends Service implements SensorEventListene
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             int foregroundTypes = FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE;
 
-            // Only add location type if permission granted
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 foregroundTypes |= FOREGROUND_SERVICE_TYPE_LOCATION;
             }
 
@@ -82,7 +79,7 @@ public class ShakeDetectionService extends Service implements SensorEventListene
         return new NotificationCompat.Builder(this, "shake_channel")
                 .setContentTitle("Shake Detection Active")
                 .setContentText("Monitoring for emergency shakes")
-                .setSmallIcon(R.drawable.ic_launcher_foreground) // Add your icon
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .build();
     }
 
@@ -95,6 +92,51 @@ public class ShakeDetectionService extends Service implements SensorEventListene
             );
             getSystemService(NotificationManager.class).createNotificationChannel(channel);
         }
+    }
+
+    private void sendShakeSMSWithLocation() {
+        String number = "7972408401";
+        String baseMessage = "HELP! I'm in an emergency. ";
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        LocationRequest locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(1000)
+                .setFastestInterval(500)
+                .setNumUpdates(1);
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                fusedLocationClient.removeLocationUpdates(this);
+
+                String finalMessage = baseMessage;
+
+                if (locationResult != null && locationResult.getLastLocation() != null) {
+                    double lat = locationResult.getLastLocation().getLatitude();
+                    double lng = locationResult.getLastLocation().getLongitude();
+                    String locationLink = "https://www.google.com/maps?q=" + lat + "," + lng;
+                    finalMessage += "Location: " + locationLink;
+                } else {
+                    finalMessage += "Location unavailable.";
+                }
+
+                EmergencyAlertManager alertManager = new EmergencyAlertManager(
+                        getApplicationContext(),
+                        number,
+                        finalMessage
+                );
+                if (alertManager.hasRequiredPermissions()) {
+                    alertManager.triggerEmergencyAlert();
+                }
+            }
+        }, getMainLooper());
     }
 
     @Override

@@ -1,12 +1,13 @@
 package com.example.resqlink;
 
-
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
-import android.media.session.MediaSessionManager;
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -17,10 +18,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 
-
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 
 public class VolumeButtonService extends Service {
 
@@ -32,14 +38,15 @@ public class VolumeButtonService extends Service {
     private Handler resetHandler = new Handler(Looper.getMainLooper());
     private Runnable resetRunnable = this::resetCounts;
 
+    private FusedLocationProviderClient fusedLocationClient;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         initMediaSession();
         startForeground(1, createNotification());
     }
-
-
 
     private void initMediaSession() {
         mediaSession = new MediaSessionCompat(this, "VolumeService");
@@ -60,13 +67,11 @@ public class VolumeButtonService extends Service {
                         Toast.makeText(getApplicationContext(), "Volume DOWN: " + downCount, Toast.LENGTH_SHORT).show();
                     }
 
-                    // Start/reset timer to reset counts after 3 seconds
                     resetHandler.removeCallbacks(resetRunnable);
-                    resetHandler.postDelayed(resetRunnable, 3000); // 3 seconds
+                    resetHandler.postDelayed(resetRunnable, 3000); // 3 sec
 
-                    // Trigger if both pressed twice
                     if (upCount >= 2 && downCount >= 2) {
-                        triggerEmergencySms();
+                        triggerEmergencySmsWithLocation();
                         resetCounts();
                     }
                 }
@@ -83,31 +88,60 @@ public class VolumeButtonService extends Service {
         downCount = 0;
     }
 
-    private void triggerEmergencySms() {
-       /* String phoneNumber = "7972408401"; // Replace with actual contact
-        String message = "Emergency! I need help. This is an automated alert.";
+    private void triggerEmergencySmsWithLocation() {
+        String phoneNumber = "7972408401";
+        String baseMessage = "HELP! I'm in an emergency. ";
 
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-        */
-        EmergencyAlertManager alertManager = new EmergencyAlertManager(
-                getApplicationContext(),
-                "7972408401",
-                "HELP! I'm in an emergency. My location is being shared."
-        );
-        if (alertManager.hasRequiredPermissions()) {
-            alertManager.triggerEmergencyAlert();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Location permission missing", Toast.LENGTH_SHORT).show();
+            return;
         }
-        Toast.makeText(this, "Emergency SMS Sent!", Toast.LENGTH_SHORT).show();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "SMS permission missing", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        LocationRequest locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(1000)
+                .setFastestInterval(500)
+                .setNumUpdates(1);
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                fusedLocationClient.removeLocationUpdates(this);
+
+                String finalMessage = baseMessage;
+
+                if (locationResult != null && locationResult.getLastLocation() != null) {
+                    double lat = locationResult.getLastLocation().getLatitude();
+                    double lng = locationResult.getLastLocation().getLongitude();
+                    String locationLink = "https://www.google.com/maps?q=" + lat + "," + lng;
+                    finalMessage += "Location: " + locationLink;
+                } else {
+                    finalMessage += "Location unavailable.";
+                }
+
+                EmergencyAlertManager alertManager = new EmergencyAlertManager(
+                        getApplicationContext(),
+                        phoneNumber,
+                        finalMessage
+                );
+                if (alertManager.hasRequiredPermissions()) {
+                    alertManager.triggerEmergencyAlert();
+                }
+                Toast.makeText(VolumeButtonService.this, "Emergency SMS Sent!", Toast.LENGTH_SHORT).show();
+            }
+        }, getMainLooper());
     }
 
     private Notification createNotification() {
         NotificationChannel channel = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             channel = new NotificationChannel("emergency_channel", "Emergency Service", NotificationManager.IMPORTANCE_LOW);
-        }
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             manager.createNotificationChannel(channel);
         }
 
@@ -122,5 +156,3 @@ public class VolumeButtonService extends Service {
         return null;
     }
 }
-
-
